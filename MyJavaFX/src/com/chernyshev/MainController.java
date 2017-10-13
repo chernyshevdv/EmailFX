@@ -41,6 +41,8 @@ public class MainController implements Initializable {
 			}
 			
 		});
+		
+		System.out.println("MainController initialzed");
 	}
 	
 
