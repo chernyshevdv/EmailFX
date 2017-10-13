@@ -35,8 +35,6 @@ public class MainController implements Initializable {
 				i1 = EmailMessageBean.stringSizeToInt(o1);
 				i2 = EmailMessageBean.stringSizeToInt(o2);
 				
-				System.out.println(String.format("Comparing %s (%d) to %s (%d) yields %d", o1, i1, o2, i2, i1.compareTo(i2)));
-				
 				return i1.compareTo(i2);
 			}
 			
