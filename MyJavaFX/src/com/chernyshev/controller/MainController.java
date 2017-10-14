@@ -1,11 +1,14 @@
-package com.chernyshev;
+package com.chernyshev.controller;
 
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.chernyshev.model.EmailMessageBean;
+import com.chernyshev.model.SampleData;
+import com.chernyshev.model.Singleton;
+import com.chernyshev.view.ViewFactory;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +33,7 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ViewFactory viewFactory = new ViewFactory();
 		singleton = Singleton.getInstance();
 		//messageRenderer.getEngine().loadContent("<html><body>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.</body></html>");
 		subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
@@ -54,17 +58,17 @@ public class MainController implements Initializable {
 		
 		
 		emailFoldersTreeView.setRoot(root);
-		TreeItem<String> inbox = new TreeItem<String>("Inbox", resolveIcon("Inbox"));
-		TreeItem<String> sent = new TreeItem<String>("Sent", resolveIcon("Sent"));
-			TreeItem<String> subitem1 = new TreeItem<String>("Subitem1", resolveIcon("Subitem1"));
-			TreeItem<String> subitem2 = new TreeItem<String>("Subitem2", resolveIcon("Subitem2"));
+		TreeItem<String> inbox = new TreeItem<String>("Inbox", viewFactory.resolveIcon("Inbox"));
+		TreeItem<String> sent = new TreeItem<String>("Sent", viewFactory.resolveIcon("Sent"));
+			TreeItem<String> subitem1 = new TreeItem<String>("Subitem1", viewFactory.resolveIcon("Subitem1"));
+			TreeItem<String> subitem2 = new TreeItem<String>("Subitem2", viewFactory.resolveIcon("Subitem2"));
 			inbox.getChildren().addAll(subitem1, subitem2);
-		TreeItem<String> spam = new TreeItem<String>("Spam", resolveIcon("Spam"));
-		TreeItem<String> trash = new TreeItem<String>("Trash", resolveIcon("Trash"));
+		TreeItem<String> spam = new TreeItem<String>("Spam", viewFactory.resolveIcon("Spam"));
+		TreeItem<String> trash = new TreeItem<String>("Trash", viewFactory.resolveIcon("Trash"));
 		
 		root.getChildren().addAll(inbox, sent, spam, trash);
 		root.setExpanded(true);
-		root.setGraphic(resolveIcon(root.getValue()));
+		root.setGraphic(viewFactory.resolveIcon(root.getValue()));
 		
 		emailTableView.setContextMenu(new ContextMenu(showDetails));
 		
@@ -83,9 +87,8 @@ public class MainController implements Initializable {
 		showDetails.setOnAction(e->{
 			try {
 				singleton.setMessage(emailTableView.getSelectionModel().getSelectedItem());
-				Pane pane = FXMLLoader.load(getClass().getResource("MessageDetailsLayout.fxml"));
-				Scene scene = new Scene(pane);
-				scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+				
+				Scene scene = viewFactory.getMessageDetailsScene();
 				Stage stage = new Stage();
 				stage.setScene(scene);
 				stage.show();
@@ -99,30 +102,7 @@ public class MainController implements Initializable {
 		System.out.println("MainController initialzed");
 	}
 	
-	private Node resolveIcon(String treeItemValue){
-		String lowerCaseTreeItemValue = treeItemValue.toLowerCase();
-		ImageView returnIcon;
-		
-		try {
-			if (lowerCaseTreeItemValue.contains("inbox"))
-				returnIcon = new ImageView(new Image(getClass().getResourceAsStream("images/inbox.png")));
-			else if (lowerCaseTreeItemValue.contains("sent"))
-				returnIcon = new ImageView(new Image(getClass().getResourceAsStream("images/sent2.png")));
-			else if (lowerCaseTreeItemValue.contains("spam"))
-				returnIcon = new ImageView(new Image(getClass().getResourceAsStream("images/spam.png")));
-			else if (lowerCaseTreeItemValue.contains("@"))
-				returnIcon = new ImageView(new Image(getClass().getResourceAsStream("images/email.png")));
-			else
-				returnIcon = new ImageView(new Image(getClass().getResourceAsStream("images/folder.png")));
-		} catch (NullPointerException e) {
-			System.out.println("Invalid image pointer.");
-			e.printStackTrace();
-			returnIcon = new ImageView();
-		}
-		returnIcon.setFitHeight(16);
-		returnIcon.setFitWidth(16);
-		return returnIcon;
-	}
+
 	
 	@FXML 
 	private TreeView<String> emailFoldersTreeView;

@@ -1,4 +1,5 @@
-package com.chernyshev;
+package com.chernyshev.model;
+
 
 public class Singleton {
 	private Singleton(){}

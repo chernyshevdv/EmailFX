@@ -1,4 +1,4 @@
-package com.chernyshev;
+package com.chernyshev.model;
 
 import javafx.beans.property.SimpleStringProperty;
 

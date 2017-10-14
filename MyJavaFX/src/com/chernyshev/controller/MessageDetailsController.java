@@ -1,7 +1,9 @@
-package com.chernyshev;
+package com.chernyshev.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.chernyshev.model.Singleton;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -1,4 +1,4 @@
-package com.chernyshev;
+package com.chernyshev.model;
 
 import java.util.HashMap;
 import java.util.Map;
