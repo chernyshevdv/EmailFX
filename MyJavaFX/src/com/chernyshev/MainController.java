@@ -8,8 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -20,12 +22,15 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		singleton = Singleton.getInstance();
 		//messageRenderer.getEngine().loadContent("<html><body>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.</body></html>");
 		subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
 		senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
@@ -76,7 +81,18 @@ public class MainController implements Initializable {
 		});
 		
 		showDetails.setOnAction(e->{
-			System.out.println("menu item clicked.");
+			try {
+				singleton.setMessage(emailTableView.getSelectionModel().getSelectedItem());
+				Pane pane = FXMLLoader.load(getClass().getResource("MessageDetailsLayout.fxml"));
+				Scene scene = new Scene(pane);
+				scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.show();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
 		});
 		
 		
@@ -131,6 +147,8 @@ public class MainController implements Initializable {
 	
     @FXML
     private Button Button1;
+    
+    private Singleton singleton;
 
     @FXML
     void Button1Action(ActionEvent event) {
