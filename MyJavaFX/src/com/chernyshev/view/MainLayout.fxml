@@ -10,8 +10,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="Button1" layoutX="28.0" layoutY="21.0" mnemonicParsing="false" onAction="#Button1Action" text="Button1" />
-      <Button layoutX="93.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="156.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="111.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="181.0" layoutY="21.0" mnemonicParsing="false" onAction="#changeReadAction" text="[un]read" />
       <TreeView fx:id="emailFoldersTreeView" layoutX="7.0" layoutY="57.0" prefHeight="487.0" prefWidth="230.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="57.0" />
       <TableView fx:id="emailTableView" layoutX="237.0" layoutY="57.0" prefHeight="200.0" prefWidth="622.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="57.0">
         <columns>
