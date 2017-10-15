@@ -4,16 +4,9 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-import com.chernyshev.model.EmailMessageBean;
-import com.chernyshev.model.SampleData;
-import com.chernyshev.model.Singleton;
-import com.chernyshev.view.ViewFactory;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -23,18 +16,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class MainController implements Initializable {
+import com.chernyshev.model.EmailMessageBean;
+import com.chernyshev.model.ModelAccess;
+import com.chernyshev.model.SampleData;
+import com.chernyshev.view.ViewFactory;
 
+public class MainController extends AbstractController implements Initializable {
+
+	public MainController(ModelAccess modelAccess) {
+		super(modelAccess);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ViewFactory viewFactory = new ViewFactory();
-		singleton = Singleton.getInstance();
+		ViewFactory viewFactory = ViewFactory.getInstance();
 		//messageRenderer.getEngine().loadContent("<html><body>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.</body></html>");
 		subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
 		senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
@@ -80,14 +79,13 @@ public class MainController implements Initializable {
 		
 		emailTableView.setOnMouseClicked(e->{
 			EmailMessageBean message = emailTableView.getSelectionModel().getSelectedItem();
+			getModelAccess().setMessage(message);
 			if (message != null)
 				messageRenderer.getEngine().loadContent(message.getContent());
 		});
 		
 		showDetails.setOnAction(e->{
 			try {
-				singleton.setMessage(emailTableView.getSelectionModel().getSelectedItem());
-				
 				Scene scene = viewFactory.getMessageDetailsScene();
 				Stage stage = new Stage();
 				stage.setScene(scene);
@@ -128,8 +126,6 @@ public class MainController implements Initializable {
     @FXML
     private Button Button1;
     
-    private Singleton singleton;
-
     @FXML
     void Button1Action(ActionEvent event) {
     	System.out.println("Button1 is clicked.");
