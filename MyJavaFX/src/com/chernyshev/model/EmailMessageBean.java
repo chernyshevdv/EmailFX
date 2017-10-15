@@ -1,14 +1,17 @@
 package com.chernyshev.model;
 
+import com.chernyshev.model.table.AbstractTableItem;
+
 import javafx.beans.property.SimpleStringProperty;
 
-public class EmailMessageBean {
+public class EmailMessageBean extends AbstractTableItem {
 	private SimpleStringProperty sender;
 	private SimpleStringProperty subject;
 	private SimpleStringProperty size;
 	private String content;
 	
-	public EmailMessageBean(String subject, String sender, int size, String content){
+	public EmailMessageBean(String subject, String sender, int size, String content, boolean isRead){
+		super(isRead);
 		this.subject = new SimpleStringProperty(subject);
 		this.sender = new SimpleStringProperty(sender);
 		this.size = new SimpleStringProperty(formatSize(size));
